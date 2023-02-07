@@ -1,0 +1,71 @@
+Sub multiple_years()
+   
+Ticker = Cells(2, 1).Value
+MsgBox (Ticker)
+
+Dim i As Long
+Dim j As Integer
+Dim LR As Long
+Dim s As Integer
+Dim ws_num As Integer
+Dim ws As Worksheet
+ws_num = ThisWorkbook.Worksheets.Count
+
+For s = 1 To ws_num
+'find the sheets that needs to take action
+If Sheets(s).Name = "2018" Or _
+   Sheets(s).Name = "2019" Or _
+   Sheets(s).Name = "2020" Then
+    
+'after finding the right sheet, run all sheets
+    ThisWorkbook.Worksheets(s).Activate
+
+LR = Cells(Rows.Count, 1).End(xlUp).Row
+MsgBox (LR)
+
+m = 0
+k = 1
+l = 1
+For i = 2 To LR
+
+    m = m + Cells(i, 7).Value
+'Cells(i, 8).Value = m
+
+    Ticker = Cells(i, 1).Value
+    If Cells(i, 1).Value <> Cells(i - 1, 1).Value Then
+  Ticker = Cells(i, 1).Value
+  
+        Cells(k, 10).Value = Ticker
+        
+        
+Starting_Price = Cells(i, 6).Value
+Cells(k, 11).Value = Starting_Price
+   k = k + 1
+
+
+    End If
+    
+    If Cells(i, 1).Value <> Cells(i + 1, 1).Value Then
+    Closing_Price = Cells(i, 6).Value
+    Cells(l, 12).Value = Closing_Price
+ 
+    
+    Price_Change = Closing_Price - Starting_Price
+    Cells(l, 13).Value = Price_Change
+       'l = l + 1
+       Percentage_Change = ((Starting_Price - Closing_Price) / Starting_Price) * 100
+       Cells(l, 13).Value = Percentage_Change
+        Cells(l, 14).Value = m
+       m = 0
+          l = l + 1
+    End If
+    
+    
+    
+    Next i
+' If the previous cell is different then pull out the next variation
+
+
+End If
+
+Next s
